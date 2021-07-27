@@ -1,17 +1,11 @@
-package com.example.myapplication;
+package com.example.myapplication
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.util.AttributeSet;
-import android.view.View;
-
-
+import android.content.Context
+import android.graphics.*
+import android.util.AttributeSet
+import android.view.View
+import com.example.myapplication.Tools.getResBitmapFor8888
+import com.example.myapplication.Tools.scaleBitmap
 
 /**
  * @Author: Administrator
@@ -19,170 +13,163 @@ import android.view.View;
  * @Company：ch
  * @Description: 功能描述
  */
-public class LineView extends View {
-
-    private int mWidth;
-    private int mHeight;
-    private Context mContext;
-    Path pathLine1,pathLine2,pathLine3,pathLine4,pathLine5;
-    Paint pointBlack,pointYellow,pointRed,pointBlue,pointGreen;
-    private int backGroundColor = Color.parseColor("#ffffff");
-    private float lineWidth=5;
-    private float scale=0.3F;
-    float x1,y1,x2,x3,x4,x5,y2,y3,y4,y5;
-
-    private Bitmap bitmap1;
-    private Bitmap bitmap2;
-    private Bitmap bitmap3;
-    private Bitmap bitmap4;
-    private Bitmap bitmap5;
-    private Canvas canvas;
-
-    public LineView(Context context) {
-        this(context, null);
+class LineView @JvmOverloads constructor(
+    private val mContext: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(
+    mContext, attrs, defStyleAttr
+) {
+    private var mWidth = 0
+    private var mHeight = 0
+    private var pathLine1: Path = Path()
+    private var pathLine2: Path = Path()
+    private var pathLine3: Path = Path()
+    private var pathLine4: Path = Path()
+    private var pathLine5: Path = Path()
+    private var pointBlack: Paint = Paint()
+    private var pointYellow: Paint = Paint()
+    private var pointRed: Paint = Paint()
+    private var pointBlue: Paint = Paint()
+    private var pointGreen: Paint = Paint()
+    private val backGroundColor = Color.parseColor("#ffffff")
+    private val lineWidth = 5f
+    private val scale = 0.3f
+    private var x1 = 0f
+    private var y1 = 0f
+    private var x2 = 0f
+    private var x3 = 0f
+    private var x4 = 0f
+    private var x5 = 0f
+    private var y2 = 0f
+    private var y3 = 0f
+    private var y4 = 0f
+    private var y5 = 0f
+    private val bitmap1: Bitmap?
+    private val bitmap2: Bitmap?
+    private val bitmap3: Bitmap?
+    private val bitmap4: Bitmap?
+    private val bitmap5: Bitmap?
+    private var canvas: Canvas? = null
+    fun setFirstXY1(x: Float, y: Float) {
+        pathLine1.moveTo(x, y)
+        x1 = x
+        y1 = y
     }
 
-    public LineView(Context context,  AttributeSet attrs) {
-        this(context, attrs, 0);
+    fun setFirstXY2(x: Float, y: Float) {
+        pathLine2.moveTo(x, y)
+        x2 = x
+        y2 = y
     }
 
-    public LineView(Context context,  AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        mContext = context;
-        pathLine1 = new Path();
-        pathLine2 = new Path();
-        pathLine3 = new Path();
-        pathLine4 = new Path();
-        pathLine5 = new Path();
-        pointBlack = new Paint();
-        pointBlack.setAntiAlias(true);
-        pointBlack.setStrokeWidth(lineWidth);
-        pointBlack.setStyle(Paint.Style.STROKE);
-        pointBlack.setColor(Color.BLACK);
-
-        pointYellow = new Paint();
-        pointYellow.setAntiAlias(true);
-        pointYellow.setStrokeWidth(lineWidth);
-        pointYellow.setStyle(Paint.Style.STROKE);
-        pointYellow.setColor(Color.YELLOW);
-
-        pointRed=new Paint();
-        pointRed.setAntiAlias(true);
-        pointRed.setStrokeWidth(lineWidth);
-        pointRed.setStyle(Paint.Style.STROKE);
-        pointRed.setColor(Color.RED);
-
-        pointBlue=new Paint();
-        pointBlue.setAntiAlias(true);
-        pointBlue.setStrokeWidth(lineWidth);
-        pointBlue.setStyle(Paint.Style.STROKE);
-        pointBlue.setColor(Color.BLUE);
-
-        pointGreen=new Paint();
-        pointGreen.setAntiAlias(true);
-        pointGreen.setStrokeWidth(lineWidth);
-        pointGreen.setStyle(Paint.Style.STROKE);
-        pointGreen.setColor(Color.GREEN);
-
-        bitmap1 = Tools.scaleBitmap(Tools.getResBitmapFor8888(getContext(), R.mipmap.player1),scale);
-        bitmap2 = Tools.scaleBitmap(Tools.getResBitmapFor8888(getContext(), R.mipmap.player2),scale);
-        bitmap3 = Tools.scaleBitmap(Tools.getResBitmapFor8888(getContext(), R.mipmap.player3),scale);
-        bitmap4 = Tools.scaleBitmap(Tools.getResBitmapFor8888(getContext(), R.mipmap.player4),scale);
-        bitmap5 = Tools.scaleBitmap(Tools.getResBitmapFor8888(getContext(), R.mipmap.player5),scale);
+    fun setFirstXY3(x: Float, y: Float) {
+        pathLine3.moveTo(x, y)
+        x3 = x
+        y3 = y
     }
 
-    public void setFirstXY1(float x,float y){
-        pathLine1.moveTo(x, y);
-        this.x1 = x;
-        this.y1 = y;
-    }
-    public void setFirstXY2(float x,float y){
-        pathLine2.moveTo(x, y);
-        this.x2 = x;
-        this.y2 = y;
-    }
-    public void setFirstXY3(float x,float y){
-        pathLine3.moveTo(x, y);
-        this.x3 = x;
-        this.y3 = y;
-    }
-    public void setFirstXY4(float x,float y){
-        pathLine4.moveTo(x, y);
-        this.x4 = x;
-        this.y4 = y;
-    }
-    public void setFirstXY5(float x,float y){
-        pathLine5.moveTo(x, y);
-        this.x5 = x;
-        this.y5 = y;
+    fun setFirstXY4(x: Float, y: Float) {
+        pathLine4.moveTo(x, y)
+        x4 = x
+        y4 = y
     }
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    fun setFirstXY5(x: Float, y: Float) {
+        pathLine5.moveTo(x, y)
+        x5 = x
+        y5 = y
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         if (changed) {
-            mWidth = getWidth();
-            mHeight = getHeight();
-
-            setBackgroundColor(backGroundColor);
-            setBackground(getResources().getDrawable(R.mipmap.playground));
+            mWidth = width
+            mHeight = height
+            setBackgroundColor(backGroundColor)
+            background = resources.getDrawable(R.mipmap.playground)
         }
-        super.onLayout(changed, left, top, right, bottom);
+        super.onLayout(changed, left, top, right, bottom)
     }
 
-    public void drawLine(float x, float y,String id) {
-
-        switch (id){
-            case "0":
-                pathLine1.lineTo(x,y);
-                this.x1 = x;
-                this.y1 = y;
-                break;
-            case "1":
-                pathLine2.lineTo(x,y);
-                this.x2 = x;
-                this.y2 = y;
-                break;
-            case "2":
-                pathLine3.lineTo(x,y);
-                this.x3 = x;
-                this.y3 = y;
-                break;
-            case "3":
-                pathLine4.lineTo(x,y);
-                this.x4 = x;
-                this.y4 = y;
-                break;
-            case "4":
-                pathLine5.lineTo(x,y);
-                this.x5 = x;
-                this.y5 = y;
-                break;
+    fun drawLine(x: Float, y: Float, id: String?) {
+        when (id) {
+            "0" -> {
+                pathLine1.lineTo(x, y)
+                x1 = x
+                y1 = y
+            }
+            "1" -> {
+                pathLine2.lineTo(x, y)
+                x2 = x
+                y2 = y
+            }
+            "2" -> {
+                pathLine3.lineTo(x, y)
+                x3 = x
+                y3 = y
+            }
+            "3" -> {
+                pathLine4.lineTo(x, y)
+                x4 = x
+                y4 = y
+            }
+            "4" -> {
+                pathLine5.lineTo(x, y)
+                x5 = x
+                y5 = y
+            }
         }
-        postInvalidate();
+        postInvalidate()
     }
 
-    public void clearCanvas(){
-        Paint paint = new Paint();
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        canvas.drawPaint(paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
+    fun clearCanvas() {
+        val paint = Paint()
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        canvas!!.drawPaint(paint)
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        this.canvas=canvas;
-        canvas.drawPath(pathLine1, pointBlack);
-        canvas.drawPath(pathLine2, pointYellow);
-        canvas.drawPath(pathLine3, pointRed);
-        canvas.drawPath(pathLine4, pointBlue);
-        canvas.drawPath(pathLine5, pointGreen);
-        //y-10是为了图片居中，具体根据图片大小设置
-        canvas.drawBitmap(bitmap1,x1,y1 - 10,pointBlack);
-        canvas.drawBitmap(bitmap2,x2,y2 - 10,pointYellow);
-        canvas.drawBitmap(bitmap3,x3,y3 - 10,pointRed);
-        canvas.drawBitmap(bitmap4,x4,y4 - 10,pointBlue);
-        canvas.drawBitmap(bitmap5,x5,y5 - 10,pointGreen);
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        this.canvas = canvas
+        canvas.drawPath(pathLine1, pointBlack)
+        canvas.drawPath(pathLine2, pointYellow)
+        canvas.drawPath(pathLine3, pointRed)
+        canvas.drawPath(pathLine4, pointBlue)
+        canvas.drawPath(pathLine5, pointGreen)
 
+        canvas.drawBitmap(bitmap1!!, x1, y1 - 10, pointBlack)
+        canvas.drawBitmap(bitmap2!!, x2, y2 - 10, pointYellow)
+        canvas.drawBitmap(bitmap3!!, x3, y3 - 10, pointRed)
+        canvas.drawBitmap(bitmap4!!, x4, y4 - 10, pointBlue)
+        canvas.drawBitmap(bitmap5!!, x5, y5 - 10, pointGreen)
+    }
+
+    init {
+        pointBlack.isAntiAlias = true
+        pointBlack.strokeWidth = lineWidth
+        pointBlack.style = Paint.Style.STROKE
+        pointBlack.color = Color.BLACK
+        pointYellow.isAntiAlias = true
+        pointYellow.strokeWidth = lineWidth
+        pointYellow.style = Paint.Style.STROKE
+        pointYellow.color = Color.YELLOW
+        pointRed.isAntiAlias = true
+        pointRed.strokeWidth = lineWidth
+        pointRed.style = Paint.Style.STROKE
+        pointRed.color = Color.RED
+        pointBlue.isAntiAlias = true
+        pointBlue.strokeWidth = lineWidth
+        pointBlue.style = Paint.Style.STROKE
+        pointBlue.color = Color.BLUE
+        pointGreen.isAntiAlias = true
+        pointGreen.strokeWidth = lineWidth
+        pointGreen.style = Paint.Style.STROKE
+        pointGreen.color = Color.GREEN
+        bitmap1 = scaleBitmap(getResBitmapFor8888(context, R.mipmap.player1), scale)
+        bitmap2 = scaleBitmap(getResBitmapFor8888(context, R.mipmap.player2), scale)
+        bitmap3 = scaleBitmap(getResBitmapFor8888(context, R.mipmap.player3), scale)
+        bitmap4 = scaleBitmap(getResBitmapFor8888(context, R.mipmap.player4), scale)
+        bitmap5 = scaleBitmap(getResBitmapFor8888(context, R.mipmap.player5), scale)
     }
 }

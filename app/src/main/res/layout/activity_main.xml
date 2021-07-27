@@ -16,7 +16,7 @@
         android:layout_below="@+id/rl"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="100dp"
-        android:background="@drawable/shape_round_button_red"
+        android:background="@drawable/shape_round_button_green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
@@ -39,6 +39,18 @@
 
 
     <Button
+        android:id="@+id/btn_pick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chronometer"
+        android:layout_alignLeft="@+id/chronometer"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/shape_round_button_blue"
+        android:text="Pick"
+        android:textColor="@android:color/white" />
+
+    <Button
         android:id="@+id/btn_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,11 +60,20 @@
         android:layout_marginTop="30dp"
         android:layout_toEndOf="@+id/chronometer"
         android:layout_toRightOf="@+id/chronometer"
-        android:background="@drawable/shape_round_button_green"
+        android:background="@drawable/shape_round_button_red"
         android:text="Stop"
         android:textColor="@android:color/white" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_marginTop="30dp" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"

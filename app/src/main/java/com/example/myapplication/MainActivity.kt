@@ -8,6 +8,9 @@ import android.widget.Button
 import android.widget.Chronometer
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
 import java.util.*
 import kotlin.random.Random
 
@@ -16,14 +19,17 @@ class MainActivity : AppCompatActivity(),View.OnClickListener{
     private var relativeLayout: RelativeLayout? = null
     private var btnStart: Button? = null
     private var btnStop: Button? = null
+    private var btnPick: Button? = null
     private val maxWidth: Int = 1300
     private val maxHeight: Int = 800
     private val firstX: Float =150F
     private val firstY: Float =150F
     private var timer: Timer = Timer()
+    private var adapter: MainAdapter?=null
     private var chronometers: Chronometer? = null
-
+    private val mList =mutableListOf<String>()
     private var task: TimerTask? = null
+    private var recyclerView:RecyclerView?=null
 
     val handler : Handler = Handler{
         when(it.what){
@@ -78,30 +84,27 @@ class MainActivity : AppCompatActivity(),View.OnClickListener{
         relativeLayout=findViewById(R.id.rl)
         btnStart=findViewById(R.id.btn_start)
         btnStop=findViewById(R.id.btn_stop)
+        btnPick=findViewById(R.id.btn_pick)
+        btnPick?.setOnClickListener(this)
         btnStart?.setOnClickListener(this)
         btnStop?.setOnClickListener(this)
+        adapter = MainAdapter(this, mList)
+        recyclerView = findViewById<RecyclerView>(R.id.list)
+        recyclerView?.apply {
+            itemAnimator = SlideInLeftAnimator()
+            adapter = this@MainActivity.adapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     private fun addPlayView() {
         lineView = LineView(this)
         relativeLayout?.addView(lineView)
-        lineView!!.setFirstXY1(firstX, firstY)
-        lineView!!.setFirstXY2(firstX, firstY)
-        lineView!!.setFirstXY3(firstX, firstY)
-        lineView!!.setFirstXY4(firstX, firstY)
-        lineView!!.setFirstXY5(firstX, firstY)
-
-//        chronometers?.setOnChronometerTickListener {
-//            it.
-//        }
-    }
-
-    private fun startTimer(){
-        timer.schedule(object : TimerTask() {
-            override fun run() {
-                handler.sendEmptyMessage(0)
-            }
-        }, 500, 500)
+        lineView!!.setFirstXY1(firstX-50, firstY-60)
+        lineView!!.setFirstXY2(firstX+30, firstY+280)
+        lineView!!.setFirstXY3(firstX+130, firstY+300)
+        lineView!!.setFirstXY4(firstX+380, firstY+300)
+        lineView!!.setFirstXY5(firstX+500, firstY-90)
     }
 
     override fun onClick(v: View?) {
@@ -111,22 +114,29 @@ class MainActivity : AppCompatActivity(),View.OnClickListener{
                 chronometers?.start()
             }
             R.id.btn_stop -> {
-                Log.e("sdf", chronometers?.text as String)
-                Log.e("sdf2", chronometers?.base.toString())
+                chronometers?.stop()
                 endTask()
                 lineView?.clearCanvas()
                 addPlayView()
+            }
+            R.id.btn_pick -> {
+                if (mList.size > 4) {
+                    recyclerView?.post(Runnable { recyclerView?.scrollToPosition(0) })
+                }
+                adapter?.add(chronometers?.text as String, 0)
             }
         }
     }
 
     private fun startTask(){
-        task = Task().task
-        timer.schedule(task, 500, 500);
+        if(task==null){
+            task = Task().task
+            timer.schedule(task, 500, 500);
+        }
     }
 
     private fun endTask() {
-        task!!.cancel()
+        task?.cancel()
         task = null
     }
     inner class Task {
@@ -138,4 +148,10 @@ class MainActivity : AppCompatActivity(),View.OnClickListener{
             }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        chronometers?.stop()
+        chronometers=null
+        task = null
+    }
 }
