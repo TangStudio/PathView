@@ -6,3 +6,7 @@ Generally speaking, high frequency and dense data are needed for transmission in
 You can replace the playground background as you like and want, such as hockey rink, football field, etc. For real data collection, athletes need to wear wearable devices to collect sports data, and then convert them into coordinate data that can be used by the client.
 
 The demo is currently proportionally designed for the tablet, you can change the demo's display scale and run it on the phone.
+
+
+--------------------------------------------------------------------------------------
+Thanks to [recyclerview-animators](https://github.com/wasabeef/recyclerview-animators)
