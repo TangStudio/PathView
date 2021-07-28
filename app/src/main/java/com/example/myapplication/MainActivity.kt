@@ -111,6 +111,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener{
         when (v?.id){
             R.id.btn_start -> {
                 /**
+                 * The startTask function simply provides a demonstration of a random simulation.
                  * Change this place to your own way of implementation. Generally speaking,
                  * high frequency and dense data are needed for transmission in order to show
                  * a coherent effect on canvas. For example, the back end uses socket to transmit
