@@ -110,7 +110,13 @@ class MainActivity : AppCompatActivity(),View.OnClickListener{
     override fun onClick(v: View?) {
         when (v?.id){
             R.id.btn_start -> {
-                startTask()
+                /**
+                 * Change this place to your own way of implementation. Generally speaking,
+                 * high frequency and dense data are needed for transmission in order to show
+                 * a coherent effect on canvas. For example, the back end uses socket to transmit
+                 * high-frequency X and Y coordinate values, and the APP end also uses socket to receive data
+                 */
+//                startTask()
                 chronometers?.start()
             }
             R.id.btn_stop -> {
